@@ -1,0 +1,51 @@
+{% extends "routes/base.html" %}
+{% load static %}
+
+{% block title %}All Routes — BusNet{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'routes/css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="hero">
+        <h1>Bus Network Routes</h1>
+        <p>Browse all available routes and book your seat</p>
+    </div>
+
+    <div class="section-header">
+        <h2>Available Routes</h2>
+        <span class="route-count">{{ routes|length }} route{{ routes|length|pluralize }}</span>
+    </div>
+
+    {% if routes %}
+    <div class="routes-grid">
+        {% for route in routes %}
+        <a href="{% url 'detail' route.id %}" class="route-card">
+            <div class="route-stations">
+                <div>
+                    <div class="station-name">{{ route.origin.name }}</div>
+                    <div class="station-city">{{ route.origin.city }}</div>
+                </div>
+                <div class="arrow">→</div>
+                <div>
+                    <div class="station-name">{{ route.destination.name }}</div>
+                    <div class="station-city">{{ route.destination.city }}</div>
+                </div>
+            </div>
+            <div class="route-meta">
+                <span class="badge badge-blue">🕐 {{ route.duration }} min</span>
+                <span class="badge badge-purple">👥 {{ route.passengers.count }} booked</span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <h2>No routes available yet</h2>
+        <p>Check back later or add routes through the admin panel.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

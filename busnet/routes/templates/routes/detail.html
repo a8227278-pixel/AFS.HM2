@@ -1,0 +1,73 @@
+{% extends "routes/base.html" %}
+{% load static %}
+
+{% block title %}Route {{ route.id }} — BusNet{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'routes/css/detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <a href="{% url 'index' %}" class="back-link">← Back to all routes</a>
+
+    <div class="route-header">
+        <div class="route-journey">
+            <div class="station-block">
+                <div class="label">From</div>
+                <div class="name">{{ route.origin.name }}</div>
+                <div class="city">{{ route.origin.city }}</div>
+            </div>
+            <div class="journey-arrow">→</div>
+            <div class="station-block">
+                <div class="label">To</div>
+                <div class="name">{{ route.destination.name }}</div>
+                <div class="city">{{ route.destination.city }}</div>
+            </div>
+        </div>
+        <div class="route-badges">
+            <span class="badge badge-blue">🕐 {{ route.duration }} minutes</span>
+            <span class="badge badge-purple">👥 {{ passengers|length }} passenger{{ passengers|length|pluralize }}</span>
+            <span class="badge badge-green">Route #{{ route.id }}</span>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>Passengers</h2>
+        {% if passengers %}
+        <div class="passenger-list">
+            {% for p in passengers %}
+            <div class="passenger-item">
+                <div class="avatar">{{ p.username|slice:":1"|upper }}</div>
+                <span class="passenger-name">{{ p.username }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="no-passengers">No passengers booked yet. Be the first!</p>
+        {% endif %}
+    </div>
+
+    <div class="booking-section">
+        <h2>Your Booking</h2>
+        {% if user.is_authenticated %}
+            {% if already_booked %}
+                <div class="already-booked-msg">✓ You have a seat on this route</div>
+                <form action="{% url 'unbook' route.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Unbook Seat</button>
+                </form>
+            {% else %}
+                <form action="{% url 'book' route.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Book a Seat</button>
+                </form>
+            {% endif %}
+        {% else %}
+            <div class="login-prompt">
+                <a href="{% url 'login' %}">Log in</a> or <a href="{% url 'register' %}">create an account</a> to book a seat on this route.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
