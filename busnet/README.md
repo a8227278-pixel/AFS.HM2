@@ -1,24 +1,17 @@
-# BusNet — CS50 Web Bus Network Lab
+# BusNet
 
-A Django web app for browsing and booking bus routes, built with user authentication.
+Bus Network web app — CS50 Web
 
-## Features
-- Browse all available routes with origin, destination, and duration
-- User registration, login, and logout
-- Book or unbook a seat on any route (login required)
-- Route detail page shows all passengers
-- Deployed on Render with PostgreSQL and WhiteNoise
+## Links
 
-## Live URL
-<!-- Add your Render URL here -->
+- Live: https://bus-network-system.onrender.com
+- Repo: https://github.com/a8227278-pixel/AFS.HM2
 
-## Local Development
+## Bonus
 
-```bash
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py createsuperuser
-python manage.py runserver
-```
+- Passenger count shown on index page
+- Custom dark theme CSS
+
+## Limitations
+
+- Free Render sleeps after 15 min inactivity
